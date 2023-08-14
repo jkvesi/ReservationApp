@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/</item>
+        <item>@font/abril_fatface</item>
+        <item>@font/aclonica</item>
+        <item>@font/alatsi</item>
+        <item>@font/allerta</item>
+        <item>@font/amaranth_bold_italic</item>
+        <item>@font/arimo_bold</item>
+        <item>@font/bowlby_one</item>
+        <item>@font/volkhov_bold</item>
+    </array>
+</resources>

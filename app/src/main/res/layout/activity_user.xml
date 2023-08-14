@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity"
+    android:orientation="vertical"
+    android:background="@color/background_color"
+    android:gravity="center">
+
+    <Button
+        android:id="@+id/newReservationBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:fontFamily="@font/allerta"
+        android:text="New Reservation"
+        android:textColor="@color/textView_color" />
+
+    <Button
+        android:id="@+id/prevReservationBtn"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Previous Reservations"
+        android:textColor="@color/textView_color"
+        android:fontFamily="@font/allerta"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"/>
+
+    <Button
+        android:id="@+id/profileSettingsBtn"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Profile settings"
+        android:textColor="@color/textView_color"
+        android:fontFamily="@font/allerta"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"/>
+
+    <Button
+        android:id="@+id/logOutBtn"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log out"
+        android:textColor="@color/textView_color"
+        android:fontFamily="@font/allerta"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"/>
+</LinearLayout>

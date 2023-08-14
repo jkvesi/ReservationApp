@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    tools:context=".NewReservationActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@color/button_color">
+
+            <ImageView
+                android:id="@+id/homeIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="10dp"
+                app:srcCompat="@drawable/baseline_home_24"
+                tools:layout_editor_absoluteX="353dp"
+                tools:layout_editor_absoluteY="0dp" />
+
+            <TextView
+                android:id="@+id/toolbarText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/allerta"
+                android:padding="17dp"
+                android:text="Profileeee"
+                android:textColor="@color/textViewHeader_color"
+                android:textSize="25dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="39dp"
+                tools:layout_editor_absoluteY="19dp" />
+
+
+        </RelativeLayout>
+        <Button
+            android:id="@+id/addServicesBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onAddServicesBtnClick"
+            android:text="Add services" />
+
+        <FrameLayout
+            android:id="@+id/addNewServiceFrame"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/companyName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/allerta"
+                        android:padding="15dp"
+                        android:text="Company name"
+                        android:textColor="@color/textView_color"
+                        android:textColorHighlight="#2674B3"
+                        android:textColorLink="#2395C8"
+                        android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/companyNameHolder"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="text" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/serviceType"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/allerta"
+                        android:padding="15dp"
+                        android:text="Service type"
+                        android:textColor="@color/textView_color"
+                        android:textColorHighlight="#2674B3"
+                        android:textColorLink="#2395C8"
+                        android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/serviceTypeHolder"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="text" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/explanation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/allerta"
+                        android:padding="15dp"
+                        android:text="Add subtypes for your type of service (e.g. feniranje za frizerke)"
+                        android:textColor="@color/textView_color"
+                        android:textColorHighlight="#2674B3"
+                        android:textColorLink="#2395C8"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginRight="20dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/serviceSubtype"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/allerta"
+                                android:padding="15dp"
+                                android:text="Service subtype"
+                                android:textColor="@color/textView_color"
+                                android:textColorHighlight="#2674B3"
+                                android:textColorLink="#2395C8"
+                                android:textSize="20sp" />
+
+                            <EditText
+                                android:id="@+id/serviceSubtypeHolder"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:inputType="text" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/prize"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/allerta"
+                                android:padding="15dp"
+                                android:text="Prize"
+                                android:textColor="@color/textView_color"
+                                android:textColorHighlight="#2674B3"
+                                android:textColorLink="#2395C8"
+                                android:textSize="20sp" />
+
+                            <EditText
+                                android:id="@+id/prizeHolder"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:inputType="text" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/duration"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/allerta"
+                                android:padding="15dp"
+                                android:text="Duration(min)"
+                                android:textColor="@color/textView_color"
+                                android:textColorHighlight="#2674B3"
+                                android:textColorLink="#2395C8"
+                                android:textSize="20sp" />
+
+                            <EditText
+                                android:id="@+id/durationHolder"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:inputType="text" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </FrameLayout>
+
+                <Button
+                    android:id="@+id/addNewServiceBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="250dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:backgroundTint="#84638E"
+                    android:text="Add more" />
+
+                <Button
+                    android:id="@+id/saveButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="120dp"
+                    android:layout_marginEnd="120dp"
+                    android:layout_marginBottom="30dp"
+                    android:backgroundTint="#84638E"
+                    android:onClick="onSaveButtonClick"
+
+                    android:text="Save" />
+
+            </LinearLayout>
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/myServicesBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="My Services"
+            android:onClick="onMyServicesClick"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/companyDisplay"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/allerta"
+                        android:text="Company name"
+                        android:textColor="@color/textView_color"
+                        android:textColorHighlight="#2674B3"
+                        android:textColorLink="#2395C8"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/servicedisplay"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/allerta"
+                        android:text="Company name"
+                        android:textColor="@color/textView_color"
+                        android:textColorHighlight="#2674B3"
+                        android:textColorLink="#2395C8"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/serviceTypeDisplay"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/allerta"
+                        android:text="Company name"
+                        android:textColor="@color/textView_color"
+                        android:textColorHighlight="#2674B3"
+                        android:textColorLink="#2395C8"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
