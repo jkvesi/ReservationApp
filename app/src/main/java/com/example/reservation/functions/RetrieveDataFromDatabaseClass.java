@@ -1,15 +1,11 @@
 package com.example.reservation.functions;
 
-import android.service.autofill.UserData;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 
-import com.example.reservation.ProviderProfileSettingsActivity;
+import com.example.reservation.classes.GlobalLists;
 import com.example.reservation.classes.ReturnServiceClassHolder;
 import com.example.reservation.classes.ReturnServicesClass;
 import com.example.reservation.classes.UserDataClass;
-import com.example.reservation.implementations.OnDataFetchedClass;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,7 +18,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 
 public class RetrieveDataFromDatabaseClass {
     String userName, country, city;
@@ -211,10 +206,17 @@ public class RetrieveDataFromDatabaseClass {
                             for (DataSnapshot serviceType : service.getChildren()) {
                                 String serviceTypeName = serviceType.getKey();
                                 serviceTypes.add(serviceTypeName);
+                                List<String> list = new ArrayList<>();
+                                list.add(companyName);
+                                list.add(serviceName);
+                                list.add(serviceTypeName);
+
+                                GlobalLists.getInstance().addList(list);
                             }
                             services.add(serviceName);
                         }
                         companies.add(companyName);
+
                     }
                     ReturnServicesClass returnServicesClass = new ReturnServicesClass(companies, services, serviceTypes);
                     ReturnServiceClassHolder.getInstance().setReturnServices(returnServicesClass);
@@ -223,22 +225,27 @@ public class RetrieveDataFromDatabaseClass {
         });
 
     }
-    public List<String> getCompanyList (DatabaseReference databaseReference, UserDataClass user){
+    public List<List<String>> presentDataServices (ReturnServicesClass returnServices){
+        List<String> returnedList = new ArrayList<>();
 
-        List<String> companies = new ArrayList<>();
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getFirstName()).child("Service");
-        databaseReference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull final Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    DataSnapshot dataSnapshot = task.getResult();
-                    for(DataSnapshot company : dataSnapshot.getChildren()){
-                        String companyName = company.getKey();
-                        companies.add(companyName);
-                    }
+        List<List<String>> displayList = new ArrayList<>();
+
+        int numOfCompanies = ReturnServiceClassHolder.getInstance().getReturnServices().getCompanyList().size();
+        int numOfServices = ReturnServiceClassHolder.getInstance().getReturnServices().getServiceList().size();
+        int numOfServiceTypes = ReturnServiceClassHolder.getInstance().getReturnServices().getServiceTypeList().size();
+
+        for(int companyNum = 0; companyNum < numOfCompanies; companyNum ++){
+            for(int serviceNum = 0; serviceNum < numOfServices; numOfServices++ ){
+                for(int serviceTypeNum = 0; serviceTypeNum < numOfServiceTypes; serviceTypeNum ++){
+
+                    returnedList.add(returnServices.getCompanyList().get(numOfCompanies));
+                    returnedList.add(returnServices.getServiceList().get(numOfServices));
+                    returnedList.add(returnServices.getServiceTypeList().get(numOfServiceTypes));
+                    displayList.add(returnedList);
                 }
             }
-        });
-        return companies;
+        }
+
+        return  displayList;
     }
 }

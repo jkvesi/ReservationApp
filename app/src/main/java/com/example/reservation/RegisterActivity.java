@@ -37,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText spinnerCountry, spinnerCity;
 
     FirebaseAuth mAuth;
+    FrameLayout frame;
 
     MapDataToDatabaseClass mapCountryAndCity = new MapDataToDatabaseClass();
     @Override
@@ -56,7 +57,8 @@ public class RegisterActivity extends AppCompatActivity {
         spinnerCountry = findViewById(R.id.countryHolder);
         spinnerCity = findViewById(R.id.cityHolder);
         switcher = findViewById(R.id.switcher);
-        FrameLayout frame = findViewById(R.id.frame);
+        frame = findViewById(R.id.frame);
+
 
 
         switcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

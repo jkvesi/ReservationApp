@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 
 
+import com.example.reservation.classes.ReturnServiceClassHolder;
+import com.example.reservation.classes.UserDataHolder;
+import com.example.reservation.functions.RetrieveDataFromDatabaseClass;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,12 +29,16 @@ public class HomeActivity extends AppCompatActivity {
     FirebaseUser user;
     String userName;
     Boolean switcher;
+    DatabaseReference companyReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
+        RetrieveDataFromDatabaseClass retrieveData = new RetrieveDataFromDatabaseClass();
+        retrieveData.getServices(companyReference, UserDataHolder.getInstance().getUserData());
+       // retrieveData.presentDataServices(ReturnServiceClassHolder.instance.getReturnServices());
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
