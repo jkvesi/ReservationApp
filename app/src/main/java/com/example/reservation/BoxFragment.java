@@ -27,7 +27,6 @@ public class BoxFragment extends Fragment {
         LinearLayout containerLayout = rootView.findViewById(R.id.containerLayout);
 
         // Loop to add the box layout multiple times
-        int itmesInList= GlobalLists.getInstance().getMasterList().get(0).size();
         int listSize = GlobalLists.getInstance().getMasterList().size();
         for (int i = 0; i < listSize; i++) {
 
@@ -48,23 +47,6 @@ public class BoxFragment extends Fragment {
                 // Add the inflated box layout to the container
                 containerLayout.addView(boxView);
             }
-
-
-        ///dodano
-
-       /* int numOfServices = ReturnServiceClassHolder.getInstance().getReturnServices().getServiceList().size();
-           for(int serviceNum = 0; serviceNum < numOfServices; numOfServices++ ){
-                    View boxView = inflater.inflate(R.layout.item_box_layout, containerLayout, false);
-
-                    TextView serviceTextView = boxView.findViewById(R.id.serviceDisplay);
-
-
-                    serviceTextView.setText(ReturnServiceClassHolder.getInstance().getReturnServices().getServiceTypeList().get(serviceNum));
-
-                    // Add the inflated box layout to the container
-                    containerLayout.addView(boxView);
-
-        }*/
 
         return rootView;
     }

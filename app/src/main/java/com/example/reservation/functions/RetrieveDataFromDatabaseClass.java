@@ -192,6 +192,7 @@ public class RetrieveDataFromDatabaseClass {
         List<String> companies = new ArrayList<>();
         List<String> services = new ArrayList<>();
         List<String> serviceTypes = new ArrayList<>();
+        GlobalLists.getInstance().getMasterList().clear();
         String display = "";
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getFirstName()).child("Service");
         databaseReference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {

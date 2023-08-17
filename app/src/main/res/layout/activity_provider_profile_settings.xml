@@ -253,7 +253,6 @@
                     android:layout_marginBottom="30dp"
                     android:backgroundTint="#84638E"
                     android:onClick="onSaveButtonClick"
-
                     android:text="Save" />
 
             </LinearLayout>
@@ -278,16 +277,103 @@
             android:id="@+id/workingHoursBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onMyWorkingHoursBtnClick"
             android:text="My working hours" />
 
         <FrameLayout
+            android:id="@+id/workingHoursFrame"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="nlwčjčqsdfjbsdjlfvs"/>
+            android:layout_height="0dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/selectDayBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#84638E"
+                        android:text="Select day" />
+
+                    <Button
+                        android:id="@+id/selectOpenHourBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#84638E"
+                        android:text="Opening hour" />
+
+                    <Button
+                        android:id="@+id/selectClosHourBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#84638E"
+                        android:text="Closing hour" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/dateTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/allerta"
+                        android:padding="15dp"
+                        android:text=""
+                        android:textColor="@color/textView_color"
+                        android:textColorHighlight="#2674B3"
+                        android:textColorLink="#2395C8"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/openingHourTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/allerta"
+                        android:padding="15dp"
+                        android:text=""
+                        android:textColor="@color/textView_color"
+                        android:textColorHighlight="#2674B3"
+                        android:textColorLink="#2395C8"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/closingHourTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/allerta"
+                        android:padding="15dp"
+                        android:text=""
+                        android:textColor="@color/textView_color"
+                        android:textColorHighlight="#2674B3"
+                        android:textColorLink="#2395C8"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/saveAndAddTimeBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="#84638E"
+                    android:onClick="onSaveAndAddTimeBtnClick"
+                    android:text="Save and add new Time" />
+            </LinearLayout>
         </FrameLayout>
 
 

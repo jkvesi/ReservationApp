@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.reservation.classes.GlobalLists;
+
 public class PreviousReservationsActivity extends AppCompatActivity {
 
     @Override
@@ -19,6 +21,7 @@ public class PreviousReservationsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Open the new activity
+                GlobalLists.getInstance().getMasterList().clear();
                 Intent intent = new Intent(PreviousReservationsActivity.this, HomeActivity.class);
                 startActivity(intent);
             }

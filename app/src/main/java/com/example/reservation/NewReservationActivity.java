@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.reservation.classes.GlobalLists;
 import com.example.reservation.functions.RetrieveDataFromDatabaseClass;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -44,6 +45,7 @@ public class NewReservationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Open the new activity
+                GlobalLists.getInstance().getMasterList().clear();
                 Intent intent = new Intent(NewReservationActivity.this, HomeActivity.class);
                 startActivity(intent);
             }

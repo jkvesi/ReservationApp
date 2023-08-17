@@ -1,6 +1,7 @@
 package com.example.reservation;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,6 +15,7 @@ import com.example.reservation.classes.UserDataHolder;
 import com.example.reservation.functions.RetrieveDataFromDatabaseClass;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,7 +40,6 @@ public class HomeActivity extends AppCompatActivity {
 
         RetrieveDataFromDatabaseClass retrieveData = new RetrieveDataFromDatabaseClass();
         retrieveData.getServices(companyReference, UserDataHolder.getInstance().getUserData());
-       // retrieveData.presentDataServices(ReturnServiceClassHolder.instance.getReturnServices());
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
@@ -93,6 +94,9 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 }
             });
+
+
+
 
             logoutBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
