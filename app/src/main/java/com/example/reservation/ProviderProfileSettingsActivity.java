@@ -103,7 +103,6 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
                 startActivity(intent);
             }
         });
-
         selectDayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -212,6 +211,11 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
                 .commit();
         GlobalLists.getInstance().getMasterList().add(newAddedService);
 
+        companyNameTextView.setText("");
+        serviceTextView.setText("");
+        serviceSubTypetextView.setText("");
+        prizeTextView.setText("");
+        durationTextView.setText("");
         //kreiraj novu klasu za sve podtipove od te usluge i pohrani je kao podNode od imena servisa
         ServiceSubtypeClass serviceSpec = new ServiceSubtypeClass(serviceType, prize, duration);
         FirebaseDatabase.getInstance().getReference("Users").child(userName).child("Service").child(companyName).child(service).child(serviceType).push().setValue(serviceSpec);
@@ -225,7 +229,6 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
         retrieveData.getServices(companyReference, UserDataHolder.getInstance().getUserData());
 
     }
-
     public void onSaveAndAddTimeBtnClick(View v){
         String date = dateDisplay.getText().toString();
         String openHour = openHourDisplay.getText().toString();
@@ -239,6 +242,15 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
         closeHourDisplay.setText("");
     }
 
+    public void onMyWorkingHoursBtnClick(View v){
+        if( frameWorkingHours.getLayoutParams().height == 0 ) {
+            frameWorkingHours.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            frameWorkingHours.requestLayout();
+        } else {
+            frameWorkingHours.getLayoutParams().height = 0;
+            frameWorkingHours.requestLayout();
+        }
+    }
     public void onMyServicesClick(View v){
 
         if( myServicesLayout.getLayoutParams().height == 0 ) {
@@ -247,16 +259,6 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
         } else {
             myServicesLayout.getLayoutParams().height = 0;
             myServicesLayout.requestLayout();
-        }
-    }
-
-    public void onMyWorkingHoursBtnClick(View v){
-        if( frameWorkingHours.getLayoutParams().height == 0 ) {
-            frameWorkingHours.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            frameWorkingHours.requestLayout();
-        } else {
-            frameWorkingHours.getLayoutParams().height = 0;
-            frameWorkingHours.requestLayout();
         }
     }
 
