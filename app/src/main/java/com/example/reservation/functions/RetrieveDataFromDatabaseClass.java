@@ -87,6 +87,58 @@ public class RetrieveDataFromDatabaseClass {
         return countries;
     }
 
+    public List<String> getListOfCitiesByCountryFromDB(DatabaseReference reference, String country){
+        List<String> cities= new ArrayList<>();
+        reference.child(country).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull final Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    DataSnapshot dataSnapshot = task.getResult();
+
+                    for(DataSnapshot country : dataSnapshot.getChildren()){
+                        String countryName = country.getKey();
+                        cities.add(countryName);
+                    }
+                }
+            }
+        });
+        return cities;
+    }
+    public List<String> getListOfServicesByCitiesAndCountryFromDB(DatabaseReference reference, String country, String city){
+        List<String> services= new ArrayList<>();
+        reference.child(country).child(city).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull final Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    DataSnapshot dataSnapshot = task.getResult();
+
+                    for(DataSnapshot country : dataSnapshot.getChildren()){
+                        String countryName = country.getKey();
+                        services.add(countryName);
+                    }
+                }
+            }
+        });
+        return services;
+    }
+    public List<String> getListOfServiceTypesByCitiesAndCountryFromDB(DatabaseReference reference, String country, String city, String service){
+        List<String> serviceTypes = new ArrayList<>();
+        reference.child(country).child(city).child(service).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull final Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    DataSnapshot dataSnapshot = task.getResult();
+
+                    for(DataSnapshot country : dataSnapshot.getChildren()){
+                        String countryName = country.getKey();
+                        serviceTypes.add(countryName);
+                    }
+                }
+            }
+        });
+        return serviceTypes;
+    }
+
     public List<String> getListOfCities(DatabaseReference reference, String country){
         List<String> cities = new ArrayList<>();
 

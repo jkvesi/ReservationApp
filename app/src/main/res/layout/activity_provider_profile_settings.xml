@@ -33,7 +33,6 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/allerta"
                 android:padding="17dp"
-                android:text="Profileeee"
                 android:textColor="@color/textViewHeader_color"
                 android:textSize="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -283,7 +282,7 @@
         <FrameLayout
             android:id="@+id/workingHoursFrame"
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -373,6 +372,44 @@
                     android:backgroundTint="#84638E"
                     android:onClick="onSaveAndAddTimeBtnClick"
                     android:text="Save and add new Time" />
+
+                    <CheckBox
+                        android:id="@+id/everyDayCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Every day"
+                        android:fontFamily="@font/allerta"
+                        android:padding="15dp"
+                        android:textColor="@color/textView_color"
+                        android:textColorHighlight="#2674B3"
+                        android:textColorLink="#2395C8"
+                        android:textSize="20sp"/>
+                    <CheckBox
+                        android:id="@+id/duringTheWeekCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="During the week"
+                        android:fontFamily="@font/allerta"
+                        android:padding="15dp"
+                        android:textColor="@color/textView_color"
+                        android:textColorHighlight="#2674B3"
+                        android:textColorLink="#2395C8"
+                        android:textSize="20sp"/>
+                    <CheckBox
+                        android:id="@+id/weekendCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Weekend"
+                        android:fontFamily="@font/allerta"
+                        android:padding="15dp"
+                        android:textColor="@color/textView_color"
+                        android:textColorHighlight="#2674B3"
+                        android:textColorLink="#2395C8"
+                        android:textSize="20sp"/>
+
             </LinearLayout>
         </FrameLayout>
 

@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -59,11 +60,13 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
     LinearLayout myServicesLayout;
     List<String> companies;
     Button selectDayBtn, openingHourBtn, closingHourBtn;
-    int hour, minute;
+    int hourOpen, minuteOpen;
+    int hourClose, minuteClose;
     TextView dateDisplay, closeHourDisplay, openHourDisplay;
     DatabaseReference companyReference;
     Button myServicesBtn;
     private BoxFragment boxFragment;
+    TextView toolBarTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +92,9 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
         frameWorkingHours = findViewById(R.id.workingHoursFrame);
         myServicesBtn = findViewById(R.id.myServicesBtn);
         boxFragment = new BoxFragment();
+        toolBarTextView = findViewById(R.id.toolbarText);
+
+
 
 
       //  RetrieveDataFromDatabaseClass retrieveData = new RetrieveDataFromDatabaseClass();
@@ -117,14 +123,14 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
                 TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(final TimePicker timePicker, final int selectedHour, final int selectedMinute) {
-                        hour = selectedHour;
-                        minute = selectedMinute;
-                        String display = String.format(Locale.getDefault(),"%02d:%02d", hour, minute);
+                        hourOpen = selectedHour;
+                        minuteOpen = selectedMinute;
+                        String display = String.format(Locale.getDefault(),"%02d:%02d", hourOpen, minuteOpen);
                         openHourDisplay = findViewById(R.id.openingHourTextView);
                         openHourDisplay.setText(display);
                     }
                 };
-                TimePickerDialog timePickerDialog = new TimePickerDialog(ProviderProfileSettingsActivity.this, onTimeSetListener, hour, minute, true);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(ProviderProfileSettingsActivity.this, onTimeSetListener, hourOpen, minuteOpen, true);
 
                 timePickerDialog.setTitle("Select Time");
                 timePickerDialog.show();
@@ -137,14 +143,19 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
                 TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(final TimePicker timePicker, final int selectedHour, final int selectedMinute) {
-                        hour = selectedHour;
-                        minute = selectedMinute;
-                        String display = String.format(Locale.getDefault(),"%02d:%02d", hour, minute);
+                        hourClose = selectedHour;
+                        minuteClose = selectedMinute;
+                        String display = String.format(Locale.getDefault(),"%02d:%02d", hourClose, minuteClose);
                         closeHourDisplay = findViewById(R.id.closingHourTextView);
-                        closeHourDisplay.setText(display);
+                        if(hourClose < hourOpen || (hourOpen == hourClose && minuteClose < minuteOpen) ){
+                            Toast.makeText(ProviderProfileSettingsActivity.this, "Closing must be after opening!",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            closeHourDisplay.setText(display);
+                        }
                     }
                 };
-                TimePickerDialog timePickerDialog = new TimePickerDialog(ProviderProfileSettingsActivity.this, onTimeSetListener, hour, minute, true);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(ProviderProfileSettingsActivity.this, onTimeSetListener, hourClose, minuteClose, true);
 
                 timePickerDialog.setTitle("Select Time");
                 timePickerDialog.show();
@@ -154,6 +165,8 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
         //prikaz servisaaaaaaaaa
         UserDataClass userData = UserDataHolder.getInstance().getUserData();
         userName = userData.getFirstName();
+
+        toolBarTextView.setText(userData.getFirstName() + " " + userData.getLastName());
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -261,5 +274,4 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
             myServicesLayout.requestLayout();
         }
     }
-
 }

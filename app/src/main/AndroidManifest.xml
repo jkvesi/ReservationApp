@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Reservation"
         tools:targetApi="31">
+
         <activity
             android:name=".ProviderProfileSettingsActivity"
             android:exported="false"
@@ -25,6 +26,7 @@
         <activity
             android:name=".UserProfileSettings"
             android:exported="false" />
+
         <activity
             android:name=".PreviousReservationsActivity"
             android:exported="false" />
