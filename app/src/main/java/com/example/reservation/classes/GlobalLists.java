@@ -7,6 +7,7 @@ public class GlobalLists {
     private static GlobalLists instance;
 
     private List<List<String>> masterList;
+    private List<String> companiesResultList;
 
     private GlobalLists() {
         masterList = new ArrayList<>();
@@ -19,6 +20,8 @@ public class GlobalLists {
         return instance;
     }
 
+    public List<String> getCompaniesResultList(){return  companiesResultList;}
+
     public List<List<String>> getMasterList() {
         return masterList;
     }
@@ -26,5 +29,7 @@ public class GlobalLists {
     public void addList(List<String> newList) {
         masterList.add(newList);
     }
+
+    public void setCompaniesList (List<String> newList) { this.companiesResultList=newList;}
 }
 

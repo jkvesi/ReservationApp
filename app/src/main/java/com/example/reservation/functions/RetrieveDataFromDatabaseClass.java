@@ -17,6 +17,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class RetrieveDataFromDatabaseClass {
@@ -46,28 +47,6 @@ public class RetrieveDataFromDatabaseClass {
         this.city = city;
     }
 
-    public UserDataClass getUserName(FirebaseUser user, DatabaseReference reference){
-
-        UserDataClass userClass = new UserDataClass();
-        String userEmail = user.getEmail();
-
-        reference.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull final DataSnapshot snapshot) {
-                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                    userClass.setFirstName(userSnapshot.child("firstName").getValue(String.class));
-                    userClass.setCountry(userSnapshot.child("country").getValue(String.class));
-                    userClass.setCity(userSnapshot.child("city").getValue(String.class));
-                    userClass.setLastName(userSnapshot.child("lastName").getValue(String.class));
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull final DatabaseError error) {
-
-            }
-        });
-        return userClass;
-    }
 
     public List<String> getListOfCountriesFromDB(DatabaseReference reference){
         List<String> countries = new ArrayList<>();
@@ -139,105 +118,22 @@ public class RetrieveDataFromDatabaseClass {
         return serviceTypes;
     }
 
-    public List<String> getListOfCities(DatabaseReference reference, String country){
-        List<String> cities = new ArrayList<>();
-
-        reference.child(country).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+    public List<String> getListOfCompaniesForSelectedService(DatabaseReference reference, String country, String city, String service, String serviceType){
+        List<String> companies = new ArrayList<>();
+        reference.child(country).child(city).child(service).child(serviceType).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull final Task<DataSnapshot> task) {
                 if(task.isSuccessful()){
                     DataSnapshot dataSnapshot = task.getResult();
 
-                    for(DataSnapshot country : dataSnapshot.getChildren()){
-                        String countryName = country.getKey();
-                        cities.add(countryName);
+                    for(DataSnapshot companyName : dataSnapshot.getChildren()){
+                        String company = companyName.getKey();
+                        companies.add(company);
                     }
                 }
             }
         });
-        return cities;
-    }
-
-    public void getListOfServices(DatabaseReference databaseReference, UserDataClass user ){
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getFirstName()).child("Service");
-
-        ReturnServiceClassHolder returnHolder = new ReturnServiceClassHolder();
-
-        List<String> companyNameDisplay = new ArrayList<>();
-        List<String> serviceNameDisplay = new ArrayList<>();
-        List<String> serviceTypeNameDisplay = new ArrayList<>();
-
-        Query serviceQuery = databaseReference;
-        serviceQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull final DataSnapshot snapshot) {
-
-                Iterable<DataSnapshot> companyNames = snapshot.getChildren();
-                for(DataSnapshot companyNameList : companyNames){
-                    String companyName = companyNameList.getKey();//profi i susic
-                    //za profi uzet programming, za susic farma
-                    Iterable<DataSnapshot> servicesNames = companyNameList.getChildren();
-
-                    for(DataSnapshot serviceNameList : servicesNames){
-                        String serviceName = serviceNameList.getKey();
-
-                        //za programming ce uzeti java i html
-                        Iterable<DataSnapshot> servicesTypes = serviceNameList.getChildren();
-                        for(DataSnapshot serviceTypeList : servicesTypes){
-                            String serviceType = serviceTypeList.getKey();
-
-                            returnHolder.getReturnServices().getServiceTypeList().add(serviceType);
-                        }
-
-                        //serviceNameDisplay.add(serviceName);
-                        returnHolder.getReturnServices().getServiceList().add(serviceName);
-                    }
-
-                   // companyNameDisplay.add(companyName);
-
-                    returnHolder.getReturnServices().getCompanyList().add(companyName);
-
-                }
-              /*  returnService.setServiceTypeList(serviceTypeNameDisplay);
-                returnService.setServiceList(serviceNameDisplay);
-                returnService.setCompanyList(companyNameDisplay);*/
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull final DatabaseError error) {
-
-            }
-        });
-
-    }
-
-    public List<String> getCompanyNames(DatabaseReference databaseReference, UserDataClass user){
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getFirstName()).child("Service");
-
-        List<String> companyNameDisplay = new ArrayList<>();
-
-        Query serviceQuery = databaseReference;
-        serviceQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull final DataSnapshot snapshot) {
-
-                Iterable<DataSnapshot> companyNames = snapshot.getChildren();
-                for(DataSnapshot companyNameList : companyNames){
-                    String companyName = companyNameList.getKey();//profi i susic
-                    //za profi uzet programming, za susic farma
-                    Iterable<DataSnapshot> servicesNames = companyNameList.getChildren();
-                    companyNameDisplay.add(companyName);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull final DatabaseError error) {
-
-            }
-        });
-
-        return companyNameDisplay;
+        return companies;
     }
 
     public void getServices (DatabaseReference databaseReference, UserDataClass user) {
@@ -245,7 +141,6 @@ public class RetrieveDataFromDatabaseClass {
         List<String> services = new ArrayList<>();
         List<String> serviceTypes = new ArrayList<>();
         GlobalLists.getInstance().getMasterList().clear();
-        String display = "";
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getFirstName()).child("Service");
         databaseReference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -278,27 +173,42 @@ public class RetrieveDataFromDatabaseClass {
         });
 
     }
-    public List<List<String>> presentDataServices (ReturnServicesClass returnServices){
-        List<String> returnedList = new ArrayList<>();
+    public List<String> getOpenAndCloseHourForPickedDate( DatabaseReference reference,UserDataClass user, String date){
+        //reference = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getFirstName());
 
-        List<List<String>> displayList = new ArrayList<>();
-
-        int numOfCompanies = ReturnServiceClassHolder.getInstance().getReturnServices().getCompanyList().size();
-        int numOfServices = ReturnServiceClassHolder.getInstance().getReturnServices().getServiceList().size();
-        int numOfServiceTypes = ReturnServiceClassHolder.getInstance().getReturnServices().getServiceTypeList().size();
-
-        for(int companyNum = 0; companyNum < numOfCompanies; companyNum ++){
-            for(int serviceNum = 0; serviceNum < numOfServices; numOfServices++ ){
-                for(int serviceTypeNum = 0; serviceTypeNum < numOfServiceTypes; serviceTypeNum ++){
-
-                    returnedList.add(returnServices.getCompanyList().get(numOfCompanies));
-                    returnedList.add(returnServices.getServiceList().get(numOfServices));
-                    returnedList.add(returnServices.getServiceTypeList().get(numOfServiceTypes));
-                    displayList.add(returnedList);
-                }
+        List<String> workingHoursList = new ArrayList<>();
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String openingHour = dataSnapshot.child("openHour").getValue(String.class);
+                String closingHour = dataSnapshot.child("closeHour").getValue(String.class);
+                workingHoursList.add(openingHour);
+                workingHoursList.add(closingHour);
+                // Now you have the opening and closing hours for the specified date
+               // Log.d("Hours", "Opening Hour: " + openingHour + ", Closing Hour: " + closingHour);
             }
-        }
 
-        return  displayList;
+            @Override
+            public void onCancelled(DatabaseError error) {
+              //  Log.w("FirebaseError", "Failed to read value.", error.toException());
+            }
+        });
+
+
+
+       /* reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull final DataSnapshot snapshot) {
+                workingHoursList.add(snapshot.child("openHour").getValue().toString());
+                workingHoursList.add(snapshot.child("closeHour").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull final DatabaseError error) {
+
+            }
+        });*/
+        return workingHoursList;
     }
+
 }

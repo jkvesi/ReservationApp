@@ -94,12 +94,6 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
         boxFragment = new BoxFragment();
         toolBarTextView = findViewById(R.id.toolbarText);
 
-
-
-
-      //  RetrieveDataFromDatabaseClass retrieveData = new RetrieveDataFromDatabaseClass();
-      //  retrieveData.getServices(companyReference, UserDataHolder.getInstance().getUserData());
-
         ImageView iconImageView = findViewById(R.id.homeIcon);
         iconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,7 +242,7 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
         String closeHour = closeHourDisplay.getText().toString();
 
         WorkingHoursClass workingHours = new WorkingHoursClass(date, openHour, closeHour);
-        FirebaseDatabase.getInstance().getReference("Users").child(userName).child("Service").child("Working hours").setValue(workingHours);
+        FirebaseDatabase.getInstance().getReference("Users").child(userName).child("Service").child("Working hours").child(date).setValue(workingHours);
 
         dateDisplay.setText("");
         openHourDisplay.setText("");

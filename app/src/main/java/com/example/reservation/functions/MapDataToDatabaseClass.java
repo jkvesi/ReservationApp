@@ -10,6 +10,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.List;
+
 public class MapDataToDatabaseClass {
 
     public void mapCountryAndCityToDatabase(String country, String city, DatabaseReference reference){
@@ -43,5 +45,10 @@ public class MapDataToDatabaseClass {
     public void saveServiceDataToDatabase(UserDataClass user, DatabaseReference reference, ServiceClass serviceClass, ServiceSubtypeClass serviceSubtypeClass) {
         DatabaseReference serviceRef = reference.child(user.getCountry()).child(user.getCity());
         serviceRef.child(serviceClass.getService()).child(serviceSubtypeClass.getSubtype()).child(serviceClass.getCompanyName()).setValue(true);
+    }
+
+    public void saveWorkingHoursToDatabase(UserDataClass user, DatabaseReference reference, String date, String openingHour, String closingHour){
+        reference.child("Working hours").child(user.getFirstName()).child(date).child("openHour").setValue(openingHour);
+        reference.child("Working hours").child(user.getFirstName()).child(date).child("closeHour").setValue(closingHour);
     }
 }
