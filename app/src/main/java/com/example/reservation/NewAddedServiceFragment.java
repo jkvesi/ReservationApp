@@ -93,8 +93,6 @@ public class NewAddedServiceFragment extends Fragment {
             }
         });
 
-
-
             // Add the inflated box layout to the container
             containerLayout.addView(boxView);
 

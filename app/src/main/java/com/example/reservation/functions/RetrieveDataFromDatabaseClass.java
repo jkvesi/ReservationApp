@@ -17,6 +17,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -148,32 +149,32 @@ public class RetrieveDataFromDatabaseClass {
                 if (task.isSuccessful()) {
                     DataSnapshot dataSnapshot = task.getResult();
                     for (DataSnapshot company : dataSnapshot.getChildren()) {
-                        String companyName = company.getKey();
-                        for (DataSnapshot service : company.getChildren()) {
-                            String serviceName = service.getKey();
-                            for (DataSnapshot serviceType : service.getChildren()) {
-                                String serviceTypeName = serviceType.getKey();
-                                serviceTypes.add(serviceTypeName);
-                                List<String> list = new ArrayList<>();
-                                list.add(companyName);
-                                list.add(serviceName);
-                                list.add(serviceTypeName);
+                            String companyName = company.getKey();
+                            for (DataSnapshot service : company.getChildren()) {
+                                String serviceName = service.getKey();
+                                for (DataSnapshot serviceType : service.getChildren()) {
+                                    String serviceTypeName = serviceType.getKey();
+                                    serviceTypes.add(serviceTypeName);
+                                    List<String> list = new ArrayList<>();
+                                    list.add(companyName);
+                                    list.add(serviceName);
+                                    list.add(serviceTypeName);
 
-                                GlobalLists.getInstance().addList(list);
+                                    GlobalLists.getInstance().addList(list);
+                                }
+                                services.add(serviceName);
                             }
-                            services.add(serviceName);
+                            companies.add(companyName);
                         }
-                        companies.add(companyName);
 
                     }
                     ReturnServicesClass returnServicesClass = new ReturnServicesClass(companies, services, serviceTypes);
                     ReturnServiceClassHolder.getInstance().setReturnServices(returnServicesClass);
                 }
-            }
         });
 
     }
-    public List<String> getOpenAndCloseHourForPickedDate( DatabaseReference reference,UserDataClass user, String date){
+    public List<String> getOpenAndCloseHourForPickedDate( DatabaseReference reference,String user, String date){
         //reference = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getFirstName());
 
         List<String> workingHoursList = new ArrayList<>();
@@ -193,22 +194,59 @@ public class RetrieveDataFromDatabaseClass {
               //  Log.w("FirebaseError", "Failed to read value.", error.toException());
             }
         });
+        return workingHoursList;
+    }
 
+    public HashMap<String, Boolean> getTimeSlotsForSelectedDate(DatabaseReference reference, String pickedDate){
+        HashMap<String, Boolean> timeSlots = new HashMap<>();
+       /* reference.child("timeSlots").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull final Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    DataSnapshot dataSnapshot = task.getResult();
 
-
-       /* reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    for(DataSnapshot country : dataSnapshot.getChildren()){
+                       timeSlots.put(country.getKey(), (Boolean) country.getValue());
+                    }
+                }
+            }
+        });*/
+        reference.child("timeSlots").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot snapshot) {
-                workingHoursList.add(snapshot.child("openHour").getValue().toString());
-                workingHoursList.add(snapshot.child("closeHour").getValue().toString());
+                    for(DataSnapshot country : snapshot.getChildren()){
+                        timeSlots.put(country.getKey(), (Boolean) country.getValue());
+                    }
             }
 
             @Override
             public void onCancelled(@NonNull final DatabaseError error) {
 
             }
-        });*/
-        return workingHoursList;
+        });
+        return timeSlots;
     }
 
+    public List<String> getUserNameByCompany (DatabaseReference reference, String service, String serviceType, String company){
+       List<String> userNameList = new ArrayList<>();
+        reference.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    String userName = userSnapshot.getKey();
+
+                    if(dataSnapshot.child(userName).child("Service").child(company).child(service).child(serviceType).exists()){
+                        userNameList.add(userName);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle error
+            }
+        });
+       return userNameList;
+    }
 }

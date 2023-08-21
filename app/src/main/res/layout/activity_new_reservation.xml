@@ -221,29 +221,61 @@
                 android:textColor="#050505"
                 android:textSize="15sp" />
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/displaySlots"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/displayTimeSlotsBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Display Time Slots" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/fragmentSlotsContainer"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </LinearLayout>
+        </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <Button
-                android:id="@+id/availableAppointmentsBtn"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_centerInParent="true"
-                android:text="Available appointments "/>
-
-            <Button
-                android:id="@+id/privremeniBtn"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/displayBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="202dp"
-                android:text="Button" />
+                <Button
+                    android:id="@+id/availableAppointmentsBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Available appointments " />
+
+                <Button
+                    android:id="@+id/displaySlotsBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:text="Display" />
+            </LinearLayout>
+
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

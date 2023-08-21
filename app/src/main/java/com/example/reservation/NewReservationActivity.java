@@ -1,81 +1,87 @@
 package com.example.reservation;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-import android.app.DatePickerDialog;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.DatePickerDialog;
-import androidx.fragment.app.FragmentTransaction;
-import android.app.TimePickerDialog;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.reservation.classes.DataPickerFragment;
 import com.example.reservation.classes.GlobalLists;
-import com.example.reservation.classes.UserDataClass;
-import com.example.reservation.classes.UserDataHolder;
+import com.example.reservation.classes.TimeSlotGenerator;
 import com.example.reservation.functions.MapDataToDatabaseClass;
 import com.example.reservation.functions.RetrieveDataFromDatabaseClass;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 
 public class NewReservationActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
-    Spinner countrySpinner, citySpinner;
-    TextView comapnies;
     FirebaseDatabase database;
     DatabaseReference countryReference;
     DatabaseReference hourReference;
+    DatabaseReference mapWorkingHoursReference;
     DatabaseReference reference;
+    DatabaseReference userNameReference;
     List<String> countriesList = new ArrayList<>();
     List<String> citiesList = new ArrayList<>();
     List<String> servicesList = new ArrayList<>();
     List<String> serviceTypeList = new ArrayList<>();
     List<String> companiesResultList = new ArrayList<>();
 
+    List<String> userNameList = new ArrayList<>();
+
     List<String> workingHours;
-    TextView displayHour;
     Button displayBtn;
 
     Button availableAppointmentsBtn;
     String pickedDate;
-    Button privremeni;
+
+    Button displaySlotsBtn;
+    LinearLayout displaySlots;
+    RetrieveDataFromDatabaseClass retrieveDataFromDatabaseClass = new RetrieveDataFromDatabaseClass();
     String selectedCountry, selectedCity, selectedService, selectedServiceType, selectedCompany;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_reservation);
-        privremeni = findViewById(R.id.privremeniBtn);
         RetrieveDataFromDatabaseClass retrieveDataFromDatabaseClass = new RetrieveDataFromDatabaseClass();
 
-
+        TimeSlotGenerator timeSlotGenerator = new TimeSlotGenerator();
         database = FirebaseDatabase.getInstance();
         countryReference = database.getReference("Countries");
         hourReference = FirebaseDatabase.getInstance().getReference();
+        mapWorkingHoursReference = FirebaseDatabase.getInstance().getReference();
         MapDataToDatabaseClass mapToDatabase = new MapDataToDatabaseClass();
 
         RetrieveDataFromDatabaseClass retrieveFromDatabase = new RetrieveDataFromDatabaseClass();
         RetrieveDataFromDatabaseClass citiesFromDB = new RetrieveDataFromDatabaseClass();
         countriesList = retrieveFromDatabase.getListOfCountriesFromDB(countryReference);
 
+        userNameReference = FirebaseDatabase.getInstance().getReference();
+        displaySlots = findViewById(R.id.displaySlots);
         availableAppointmentsBtn = findViewById(R.id.availableAppointmentsBtn);
         ImageView iconImageView = findViewById(R.id.homeIcon);
         iconImageView.setOnClickListener(new View.OnClickListener() {
@@ -94,18 +100,68 @@ public class NewReservationActivity extends AppCompatActivity implements DatePic
         TextView selectServiceType = findViewById(R.id.serviceTypeSelector);
         TextView selectCompany = findViewById(R.id.companiesSelector);
 
-        displayBtn = findViewById(R.id.displayBtn);
+        displaySlotsBtn = findViewById(R.id.displaySlotsBtn);
+        displayBtn = findViewById(R.id.displayTimeSlotsBtn);
         displayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                privremeni.setText(workingHours.get(0));
+               // userNameList = retrieveDataFromDatabaseClass.getUserNameByCompany(userNameReference, selectedService, selectedServiceType, selectedCompany );
+               //check if that node already exist, if not then generate slots and set it to true
+                //promjeniti za userName od odabranog pruzatelja usluga, userName od current usera radi jednostavnosti
+               hourReference = FirebaseDatabase.getInstance().getReference().child("Working hours").child(userNameList.get(0)).child(pickedDate);
+               hourReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                   @Override
+                   public void onDataChange(@NonNull final DataSnapshot snapshot) {
+                       if(!snapshot.exists()){
+                           //ako nije vec postojao dodaj ga u bazi i automatski se moze sve prikazivati jer je sve true
+                           HashMap<String, Boolean> timeSlotsMap = timeSlotGenerator.generateTimeSlot(workingHours.get(0), workingHours.get(1), 30);
+                           mapToDatabase.saveWorkingHoursToDatabase(userNameList.get(0), mapWorkingHoursReference, pickedDate, workingHours.get(0), workingHours.get(1),timeSlotsMap);
+                           TimeSlotsFragment timeSlotsFragment = new TimeSlotsFragment(timeSlotsMap, pickedDate, userNameList.get(0));
+                           FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                           fragmentTransaction.replace(R.id.fragmentSlotsContainer, timeSlotsFragment);
+                           fragmentTransaction.commit();
+                       } else {
+                           HashMap<String, Boolean> timeSlotsMap = new HashMap<>();
+                           //ako vec postoji u bazi onda ga dohvati sa vrijednostima true ili false
+                           for(DataSnapshot slot : snapshot.child("timeSlots").getChildren()){
+                             //u listu dodaj samo one slotove koji vec nisu rezervirani
+                               if((Boolean)slot.getValue() == true) {
+                                 timeSlotsMap.put(slot.getKey(), (Boolean) slot.getValue());
+                             }
+                           }
+                           TimeSlotsFragment timeSlotsFragment = new TimeSlotsFragment(timeSlotsMap, pickedDate,userNameList.get(0));
+                           FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                           fragmentTransaction.replace(R.id.fragmentSlotsContainer, timeSlotsFragment);
+                           fragmentTransaction.commit();
+                       }
+                   }
 
-                mapToDatabase.saveWorkingHoursToDatabase(UserDataHolder.getInstance().getUserData(), hourReference, pickedDate, workingHours.get(0), workingHours.get(1) );
+                   @Override
+                   public void onCancelled(@NonNull final DatabaseError error) {
+
+                   }
+               });
+
+            }
+        });
+        displaySlotsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                reference = FirebaseDatabase.getInstance().getReference("Users").child(userNameList.get(0)).child("Working hours").child(pickedDate);
+                workingHours =  retrieveDataFromDatabaseClass.getOpenAndCloseHourForPickedDate(reference, userNameList.get(0), pickedDate);
+                if( displaySlots.getLayoutParams().height == 0 ) {
+                    displaySlots.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    displaySlots.requestLayout();
+                } else {
+                    displaySlots.getLayoutParams().height = 0;
+                    displaySlots.requestLayout();
+                }
             }
         });
         availableAppointmentsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
+                userNameList =retrieveDataFromDatabaseClass.getUserNameByCompany(userNameReference, selectedService, selectedServiceType, selectedCompany );
                 DialogFragment datePicker = new DataPickerFragment();
                 datePicker.show(getSupportFragmentManager(), "date picker");
 
@@ -126,7 +182,6 @@ public class NewReservationActivity extends AppCompatActivity implements DatePic
                     public boolean onMenuItemClick(final MenuItem menuItem) {
                         selectedCountry = menuItem.getTitle().toString();
                         selectCountry.setText(selectedCountry);
-                        // String message = getString(R.string.sele)
                         citiesList = retrieveFromDatabase.getListOfCitiesByCountryFromDB(countryReference, selectedCountry);
                         return false;
                     }
@@ -151,7 +206,6 @@ public class NewReservationActivity extends AppCompatActivity implements DatePic
                         selectedCity = menuItem.getTitle().toString();
                         selectCity.setText(selectedCity);
                         servicesList = retrieveFromDatabase.getListOfServicesByCitiesAndCountryFromDB(countryReference, selectedCountry, selectedCity);
-                        // String message = getString(R.string.sele)
                         return false;
                     }
                 });
@@ -176,7 +230,6 @@ public class NewReservationActivity extends AppCompatActivity implements DatePic
                         selectedService = menuItem.getTitle().toString();
                         selectService.setText(selectedService);
                         serviceTypeList = retrieveFromDatabase.getListOfServiceTypesByCitiesAndCountryFromDB(countryReference, selectedCountry, selectedCity, selectedService);
-                        // String message = getString(R.string.sele)
                         return false;
                     }
                 });
@@ -199,9 +252,6 @@ public class NewReservationActivity extends AppCompatActivity implements DatePic
                         selectedServiceType = menuItem.getTitle().toString();
                         selectServiceType.setText(selectedServiceType);
                         companiesResultList = retrieveFromDatabase.getListOfCompaniesForSelectedService(countryReference, selectedCountry, selectedCity, selectedService, selectedServiceType);
-                        // countries.setText(companiesResultList.get(0));
-                        // GlobalLists.getInstance().setCompaniesList(companiesResultList);
-                        // String message = getString(R.string.sele)
                         return false;
                     }
                 });
@@ -224,26 +274,11 @@ public class NewReservationActivity extends AppCompatActivity implements DatePic
                     public boolean onMenuItemClick(final MenuItem menuItem) {
                         selectedCompany = menuItem.getTitle().toString();
                         selectCompany.setText(selectedCompany);
-                        // companiesResultList = retrieveFromDatabase.getListOfCompaniesForSelectedService(countryReference, selectedCountry, selectedCity, selectedService, selectedServiceType);
-                        // countries.setText(companiesResultList.get(0));
-                        // GlobalLists.getInstance().setCompaniesList(companiesResultList);
-                        // String message = getString(R.string.sele)
                         return false;
                     }
                 });
 
                 popupMenu.show();
-            }
-        });
-
-        privremeni.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                reference = FirebaseDatabase.getInstance().getReference("Users").child(UserDataHolder.getInstance().getUserData().getFirstName()).child("Service").child("Working hours").child(pickedDate);
-                workingHours =  retrieveDataFromDatabaseClass.getOpenAndCloseHourForPickedDate(reference, UserDataHolder.getInstance().getUserData(), pickedDate);
-
-              //  mapToDatabase.saveWorkingHoursToDatabase(UserDataHolder.getInstance().getUserData(), hourReference, pickedDate, workingHours.get(0), workingHours.get(1) );
-
             }
         });
 

@@ -242,7 +242,7 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
         String closeHour = closeHourDisplay.getText().toString();
 
         WorkingHoursClass workingHours = new WorkingHoursClass(date, openHour, closeHour);
-        FirebaseDatabase.getInstance().getReference("Users").child(userName).child("Service").child("Working hours").child(date).setValue(workingHours);
+        FirebaseDatabase.getInstance().getReference("Users").child(userName).child("Working hours").child(date).setValue(workingHours);
 
         dateDisplay.setText("");
         openHourDisplay.setText("");
