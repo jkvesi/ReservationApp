@@ -7,7 +7,16 @@ public class GlobalLists {
     private static GlobalLists instance;
 
     private List<List<String>> masterList;
+    private List<List<String>> reservationsList;
     private List<String> companiesResultList;
+
+    public List<List<String>> getReservationsList() {
+        return reservationsList;
+    }
+
+    public void setReservationsList(final List<List<String>> reservationsList) {
+        this.reservationsList = reservationsList;
+    }
 
     private GlobalLists() {
         masterList = new ArrayList<>();
@@ -30,6 +39,7 @@ public class GlobalLists {
         masterList.add(newList);
     }
 
+    public void addReservationsList(List<String> newList){reservationsList.add(newList);}
     public void setCompaniesList (List<String> newList) { this.companiesResultList=newList;}
 }
 

@@ -2,6 +2,7 @@ package com.example.reservation.functions;
 
 import androidx.annotation.NonNull;
 
+import com.example.reservation.classes.SelectedServiceClass;
 import com.example.reservation.classes.ServiceClass;
 import com.example.reservation.classes.ServiceSubtypeClass;
 import com.example.reservation.classes.UserDataClass;
@@ -52,7 +53,12 @@ public class MapDataToDatabaseClass {
         reference.child("Working hours").child(userName).child(date).child("openHour").setValue(openingHour);
         reference.child("Working hours").child(userName).child(date).child("closeHour").setValue(closingHour);
         reference.child("Working hours").child(userName).child(date).child("timeSlots").setValue(timeSlots);
-       // reference.child("Working hours").child(user.getFirstName()).child(date).child("timeSlots").
+    }
+    public void saveNotesForPickedSlot( DatabaseReference reference,String userName, String date, String slot, String notes, String userFirstName, String userLastName ){
+        reference.child("Working hours").child(userName).child(date).child("timeSlots").child(slot).child("Notes").setValue(userFirstName + " " + userLastName + ":" + notes);
+    }
 
+    public void saveReservationsHistory(DatabaseReference reference, String userName, String pickedDate, String pickedSlot, SelectedServiceClass selectedService){
+        reference.child("Users").child(userName).child("My reservations").child(pickedDate).child(pickedSlot).setValue(selectedService);
     }
 }

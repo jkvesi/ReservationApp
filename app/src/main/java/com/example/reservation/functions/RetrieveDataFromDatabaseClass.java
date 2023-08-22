@@ -3,9 +3,12 @@ package com.example.reservation.functions;
 import androidx.annotation.NonNull;
 
 import com.example.reservation.classes.GlobalLists;
+import com.example.reservation.classes.GlobalReservationList;
+import com.example.reservation.classes.Reservation;
 import com.example.reservation.classes.ReturnServiceClassHolder;
 import com.example.reservation.classes.ReturnServicesClass;
 import com.example.reservation.classes.UserDataClass;
+import com.example.reservation.classes.UserDataHolder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
@@ -199,18 +202,6 @@ public class RetrieveDataFromDatabaseClass {
 
     public HashMap<String, Boolean> getTimeSlotsForSelectedDate(DatabaseReference reference, String pickedDate){
         HashMap<String, Boolean> timeSlots = new HashMap<>();
-       /* reference.child("timeSlots").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull final Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    DataSnapshot dataSnapshot = task.getResult();
-
-                    for(DataSnapshot country : dataSnapshot.getChildren()){
-                       timeSlots.put(country.getKey(), (Boolean) country.getValue());
-                    }
-                }
-            }
-        });*/
         reference.child("timeSlots").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot snapshot) {
@@ -248,5 +239,36 @@ public class RetrieveDataFromDatabaseClass {
             }
         });
        return userNameList;
+    }
+
+    public void getPreviousReservations(DatabaseReference reference, String user) {
+
+        GlobalLists.getInstance().getReservationsList().clear();
+        reference.child("Users").child(user).child("My reservations").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot reservationSnapshot : dataSnapshot.getChildren()) {
+                    String date = reservationSnapshot.getKey();
+                    for (DataSnapshot slotSnapshot : reservationSnapshot.getChildren()) {
+                        String slot = slotSnapshot.getKey();
+                        String company = slotSnapshot.child("company").getValue(String.class);
+                        String service = slotSnapshot.child("service").getValue(String.class);
+
+
+                        // Create a Reservation object and add it to the list
+                        Reservation reservation = new Reservation(user, date, slot, company, service);
+                        GlobalReservationList.getInstance().addReservation(reservation);
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle errors here
+            }
+        });
     }
 }

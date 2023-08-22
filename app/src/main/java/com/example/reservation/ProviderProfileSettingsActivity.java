@@ -50,7 +50,6 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
 
 
     TextView companyNameTextView, serviceTextView, prizeTextView, durationTextView, serviceSubTypetextView;
-    TextView companyNameDisplay, serviceDisplay, serviceTypeDisplay;
 
     FirebaseUser user;
     FirebaseAuth auth;
@@ -125,7 +124,6 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
                     }
                 };
                 TimePickerDialog timePickerDialog = new TimePickerDialog(ProviderProfileSettingsActivity.this, onTimeSetListener, hourOpen, minuteOpen, true);
-
                 timePickerDialog.setTitle("Select Time");
                 timePickerDialog.show();
             }
@@ -150,13 +148,11 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
                     }
                 };
                 TimePickerDialog timePickerDialog = new TimePickerDialog(ProviderProfileSettingsActivity.this, onTimeSetListener, hourClose, minuteClose, true);
-
                 timePickerDialog.setTitle("Select Time");
                 timePickerDialog.show();
             }
         });
 
-        //prikaz servisaaaaaaaaa
         UserDataClass userData = UserDataHolder.getInstance().getUserData();
         userName = userData.getFirstName();
 
@@ -167,7 +163,6 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
                     .add(R.id.fragmentContainer, new BoxFragment())
                     .commit();
         }
-
     }
 
     @Override

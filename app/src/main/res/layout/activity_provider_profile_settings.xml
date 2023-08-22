@@ -59,7 +59,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:gravity="center">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -233,23 +234,13 @@
                 </FrameLayout>
 
                 <Button
-                    android:id="@+id/addNewServiceBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="250dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginBottom="30dp"
-                    android:backgroundTint="#84638E"
-                    android:text="Add more" />
-
-                <Button
                     android:id="@+id/saveButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="120dp"
                     android:layout_marginEnd="120dp"
                     android:layout_marginBottom="30dp"
+                    android:layout_marginTop="30dp"
                     android:backgroundTint="#84638E"
                     android:onClick="onSaveButtonClick"
                     android:text="Save" />

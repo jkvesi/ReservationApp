@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.reservation.classes.UserDataClass;
 import com.example.reservation.classes.UserDataHolder;
+import com.example.reservation.functions.RetrieveDataFromDatabaseClass;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,35 +38,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
         UserDataClass userData = UserDataHolder.getInstance().getUserData();
         firstName = userData.getFirstName();
-/*
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users");
-        if(user != null){
-            String userEmail = user.getEmail();
-            reference.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull final DataSnapshot snapshot) {
-                    for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                        firstName = userSnapshot.child("firstName").getValue(String.class);
-                        lastName = userSnapshot.child("lastName").getValue(String.class);
-                        country = userSnapshot.child("country").getValue(String.class);
-                        city = userSnapshot.child("city").getValue(String.class);
-                        phone = userSnapshot.child("phone").getValue(String.class);
-                        switcher = userSnapshot.child("switcher").getValue(Boolean.class);
-                        email = userSnapshot.child("email").getValue(String.class);
-
-                        UserDataClass userData = new UserDataClass(firstName, lastName, switcher,phone, country,city, email);
-                        UserDataHolder.getInstance().setUserData(userData);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull final DatabaseError error) {
-
-                }
-            });
-        }*/
         Intent intent= getIntent();
         String message = intent.getStringExtra("greeting");
         greeting = findViewById(R.id.greeting);

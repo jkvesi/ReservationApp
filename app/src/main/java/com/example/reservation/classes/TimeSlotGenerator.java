@@ -46,7 +46,6 @@ public class TimeSlotGenerator {
                 Date currentTime =  openingTime;
                 while(currentTime.before(closingTime)){
                     timeSlots.put(sdf.format(currentTime), true);
-                    // timeSlots.add(sdf.format(currentTime));
                      currentTime  = new Date(currentTime.getTime() + intervalMinutes * 60 * 1000);
                 }
             } catch (Exception e)  {

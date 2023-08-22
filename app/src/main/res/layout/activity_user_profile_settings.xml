@@ -52,13 +52,26 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/serviceTexytView"
+                android:id="@+id/firstNameTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/allerta"
                 android:padding="15dp"
-                android:text="Service"
+                android:text="First name"
+                android:textColor="@color/textView_color"
+                android:textColorHighlight="#2674B3"
+                android:textColorLink="#2395C8"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarText" />
+            <TextView
+                android:id="@+id/firstNameTextViewHolder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/allerta"
+                android:padding="15dp"
                 android:textColor="@color/textView_color"
                 android:textColorHighlight="#2674B3"
                 android:textColorLink="#2395C8"
@@ -66,18 +79,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbarText" />
 
-            <Spinner
-                android:id="@+id/serviceSpinner"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="#673AB7"
-                android:ems="10"
-                android:entries="@array/dropdown_countries"
-                android:fontFamily="@font/allerta"
-                android:padding="15dp"
-                android:textColor="#F8F7F7"
-                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -86,32 +87,32 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/typeServiceTextView"
+                android:id="@+id/lastNameTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/allerta"
                 android:padding="15dp"
-                android:text="Type of service"
+                android:text="Last name:"
                 android:textColor="@color/textView_color"
                 android:textColorHighlight="#2674B3"
                 android:textColorLink="#2395C8"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbarText" />
-
-            <Spinner
-                android:id="@+id/typeServiceSpinner"
+            <TextView
+                android:id="@+id/lastNameTextViewHolder"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="#673AB7"
-                android:ems="10"
-                android:entries="@array/dropdown_countries"
                 android:fontFamily="@font/allerta"
                 android:padding="15dp"
-                android:textColor="#F8F7F7"
-                android:textSize="20sp" />
+                android:textColor="@color/textView_color"
+                android:textColorHighlight="#2674B3"
+                android:textColorLink="#2395C8"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarText" />
         </LinearLayout>
 
         <LinearLayout
@@ -120,65 +121,32 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/countryTextView"
+                android:id="@+id/emailTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/allerta"
                 android:padding="15dp"
-                android:text="Country"
+                android:text="Email:"
                 android:textColor="@color/textView_color"
                 android:textColorHighlight="#2674B3"
                 android:textColorLink="#2395C8"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbarText" />
-
-            <Spinner
-                android:id="@+id/countrySpinnerItem"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="#673AB7"
-                android:ems="10"
-                android:fontFamily="@font/allerta"
-                android:padding="15dp"
-                android:textColor="#C60B0B"
-                android:textSize="20sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
             <TextView
-                android:id="@+id/cityTextView"
+                android:id="@+id/emailTextViewHolder"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/allerta"
                 android:padding="15dp"
-                android:text="City"
                 android:textColor="@color/textView_color"
                 android:textColorHighlight="#2674B3"
                 android:textColorLink="#2395C8"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbarText" />
-
-            <Spinner
-                android:id="@+id/citySpinner"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="#673AB7"
-                android:ems="10"
-                android:entries="@array/dropdown_countries"
-                android:fontFamily="@font/allerta"
-                android:padding="15dp"
-                android:textColor="#F8F7F7"
-                android:textSize="20sp" />
         </LinearLayout>
 
 

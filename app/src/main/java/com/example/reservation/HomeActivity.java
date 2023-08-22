@@ -38,9 +38,12 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
+        companyReference = FirebaseDatabase.getInstance().getReference();
+
         RetrieveDataFromDatabaseClass retrieveData = new RetrieveDataFromDatabaseClass();
         retrieveData.getServices(companyReference, UserDataHolder.getInstance().getUserData());
 
+        retrieveData.getPreviousReservations(companyReference, UserDataHolder.getInstance().getUserData().getFirstName());
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");
@@ -80,6 +83,8 @@ public class HomeActivity extends AppCompatActivity {
                 public void onClick(final View view) {
                     Intent intent = new Intent(HomeActivity.this, PreviousReservationsActivity.class);
                     startActivity(intent);
+              //      RetrieveDataFromDatabaseClass retrieveDataFromDatabaseClass = new RetrieveDataFromDatabaseClass();
+                 //   retrieveDataFromDatabaseClass.getPreviousReservations(database.getReference(), UserDataHolder.getInstance().getUserData());
                 }
             });
             profileSettingsBtn.setOnClickListener(new View.OnClickListener() {

@@ -22,7 +22,9 @@ import android.widget.TextView;
 
 import com.example.reservation.classes.DataPickerFragment;
 import com.example.reservation.classes.GlobalLists;
+import com.example.reservation.classes.SelectedServiceClass;
 import com.example.reservation.classes.TimeSlotGenerator;
+import com.example.reservation.classes.UserDataHolder;
 import com.example.reservation.functions.MapDataToDatabaseClass;
 import com.example.reservation.functions.RetrieveDataFromDatabaseClass;
 import com.google.firebase.database.DataSnapshot;
@@ -69,6 +71,7 @@ public class NewReservationActivity extends AppCompatActivity implements DatePic
         setContentView(R.layout.activity_new_reservation);
         RetrieveDataFromDatabaseClass retrieveDataFromDatabaseClass = new RetrieveDataFromDatabaseClass();
 
+        MapDataToDatabaseClass mapDataToDatabaseClass = new MapDataToDatabaseClass();
         TimeSlotGenerator timeSlotGenerator = new TimeSlotGenerator();
         database = FirebaseDatabase.getInstance();
         countryReference = database.getReference("Countries");
@@ -105,6 +108,8 @@ public class NewReservationActivity extends AppCompatActivity implements DatePic
         displayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
+                SelectedServiceClass selectedService = new SelectedServiceClass(selectedServiceType, selectedCompany);
+               UserDataHolder.getInstance().setSelectedService(selectedService);
                // userNameList = retrieveDataFromDatabaseClass.getUserNameByCompany(userNameReference, selectedService, selectedServiceType, selectedCompany );
                //check if that node already exist, if not then generate slots and set it to true
                 //promjeniti za userName od odabranog pruzatelja usluga, userName od current usera radi jednostavnosti
@@ -125,7 +130,7 @@ public class NewReservationActivity extends AppCompatActivity implements DatePic
                            //ako vec postoji u bazi onda ga dohvati sa vrijednostima true ili false
                            for(DataSnapshot slot : snapshot.child("timeSlots").getChildren()){
                              //u listu dodaj samo one slotove koji vec nisu rezervirani
-                               if((Boolean)slot.getValue() == true) {
+                               if(!slot.child("Notes").exists() || slot.getValue() == (Boolean)true) {
                                  timeSlotsMap.put(slot.getKey(), (Boolean) slot.getValue());
                              }
                            }
@@ -147,6 +152,9 @@ public class NewReservationActivity extends AppCompatActivity implements DatePic
         displaySlotsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
+
+                UserDataHolder.getInstance().setPickedDate(pickedDate);
+                UserDataHolder.getInstance().setSelectedCompanyUserName(userNameList.get(0));
                 reference = FirebaseDatabase.getInstance().getReference("Users").child(userNameList.get(0)).child("Working hours").child(pickedDate);
                 workingHours =  retrieveDataFromDatabaseClass.getOpenAndCloseHourForPickedDate(reference, userNameList.get(0), pickedDate);
                 if( displaySlots.getLayoutParams().height == 0 ) {

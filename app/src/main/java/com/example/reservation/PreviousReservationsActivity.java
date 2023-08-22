@@ -1,6 +1,7 @@
 package com.example.reservation;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ public class PreviousReservationsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_previous_reservation);
+       // GlobalLists.getInstance().getReservationsList();
 
         ImageView iconImageView = findViewById(R.id.homeIcon);
         iconImageView.setOnClickListener(new View.OnClickListener() {
@@ -26,6 +28,16 @@ public class PreviousReservationsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.previousReservationContainer, new ReservationBox() );
+        fragmentTransaction.commit();
+        /*if (savedInstanceState == null) {
+           getSupportFragmentManager().beginTransaction()
+                    .add(R.id.previousReservationContainer, new ReservationBox())
+                    .commit();
+        }*/
     }
 
 }
