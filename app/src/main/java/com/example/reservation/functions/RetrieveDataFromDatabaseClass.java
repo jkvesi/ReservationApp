@@ -1,12 +1,16 @@
 package com.example.reservation.functions;
 
+import android.provider.ContactsContract;
+
 import androidx.annotation.NonNull;
 
 import com.example.reservation.classes.GlobalLists;
 import com.example.reservation.classes.GlobalReservationList;
+import com.example.reservation.classes.GlobalScheduledAppintmentList;
 import com.example.reservation.classes.Reservation;
 import com.example.reservation.classes.ReturnServiceClassHolder;
 import com.example.reservation.classes.ReturnServicesClass;
+import com.example.reservation.classes.ScheduledAppointmentClass;
 import com.example.reservation.classes.UserDataClass;
 import com.example.reservation.classes.UserDataHolder;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -243,7 +247,9 @@ public class RetrieveDataFromDatabaseClass {
 
     public void getPreviousReservations(DatabaseReference reference, String user) {
 
-        GlobalLists.getInstance().getReservationsList().clear();
+        if(!(GlobalReservationList.getInstance().getReservations() == null)) {
+            GlobalReservationList.getInstance().getReservations().clear();
+        }
         reference.child("Users").child(user).child("My reservations").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -254,12 +260,46 @@ public class RetrieveDataFromDatabaseClass {
                         String slot = slotSnapshot.getKey();
                         String company = slotSnapshot.child("company").getValue(String.class);
                         String service = slotSnapshot.child("service").getValue(String.class);
-
+                        String provider = slotSnapshot.child("provider").getValue(String.class);
 
                         // Create a Reservation object and add it to the list
-                        Reservation reservation = new Reservation(user, date, slot, company, service);
+                        Reservation reservation = new Reservation(provider, date, slot, company, service);
                         GlobalReservationList.getInstance().addReservation(reservation);
 
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle errors here
+            }
+        });
+    }
+
+    public void getScheduledAppointments(DatabaseReference reference, String currentUser) {
+
+        if(!(GlobalScheduledAppintmentList.getInstance().getAppointments() == null)) {
+            GlobalScheduledAppintmentList.getInstance().getAppointments().clear();
+        }
+        reference.child("Users").child(currentUser).child("Appointments").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot companySnapshot : dataSnapshot.getChildren()) {
+                    String company = companySnapshot.getKey();
+                    for (DataSnapshot userSnapshot : companySnapshot.getChildren()) {
+                        String user = userSnapshot.getKey();
+                        for (DataSnapshot dateSnapshot : userSnapshot.getChildren()) {
+                            String date = dateSnapshot.getKey();
+                            for(DataSnapshot slotSnapshot : dateSnapshot.getChildren()) {
+                                String slot = slotSnapshot.getKey();
+                                String service = slotSnapshot.child("service").getValue(String.class);
+
+                                ScheduledAppointmentClass scheduledAppointmentClass = new ScheduledAppointmentClass(user, date,slot,company,service);
+                                GlobalScheduledAppintmentList.getInstance().addAppointment(scheduledAppointmentClass);
+                            }
+                        }
                     }
                 }
 

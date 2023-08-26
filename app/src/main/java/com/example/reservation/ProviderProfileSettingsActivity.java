@@ -30,6 +30,7 @@ import java.util.Locale;
 
 import com.example.reservation.classes.DataPickerFragment;
 import com.example.reservation.classes.GlobalLists;
+import com.example.reservation.classes.GlobalScheduledAppintmentList;
 import com.example.reservation.classes.ReturnServiceClassHolder;
 import com.example.reservation.classes.ServiceClass;
 import com.example.reservation.classes.ServiceSubtypeClass;
@@ -62,10 +63,12 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
     int hourOpen, minuteOpen;
     int hourClose, minuteClose;
     TextView dateDisplay, closeHourDisplay, openHourDisplay;
-    DatabaseReference companyReference;
+    DatabaseReference companyReference, appointmentReference;
     Button myServicesBtn;
     private BoxFragment boxFragment;
     TextView toolBarTextView;
+    Button appointmentsBtn;
+    LinearLayout appointments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,9 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
         myServicesBtn = findViewById(R.id.myServicesBtn);
         boxFragment = new BoxFragment();
         toolBarTextView = findViewById(R.id.toolbarText);
+        appointmentsBtn = findViewById(R.id.appointmentsBtn);
+        appointmentReference = FirebaseDatabase.getInstance().getReference();
+        appointments = findViewById(R.id.appointmentsContainer);
 
         ImageView iconImageView = findViewById(R.id.homeIcon);
         iconImageView.setOnClickListener(new View.OnClickListener() {
@@ -163,6 +169,24 @@ public class ProviderProfileSettingsActivity extends AppCompatActivity implement
                     .add(R.id.fragmentContainer, new BoxFragment())
                     .commit();
         }
+
+        AppointmentBox appointmentBox = new AppointmentBox();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.appointmentsContainer, appointmentBox);
+        fragmentTransaction.commit();
+
+        appointmentsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                if( appointments.getLayoutParams().height == 0 ) {
+                    appointments.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    appointments.requestLayout();
+                } else {
+                    appointments.getLayoutParams().height = 0;
+                    appointments.requestLayout();
+                }
+            }
+        });
     }
 
     @Override

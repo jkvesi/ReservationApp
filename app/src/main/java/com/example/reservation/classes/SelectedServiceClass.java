@@ -1,8 +1,7 @@
 package com.example.reservation.classes;
 
 public class SelectedServiceClass {
-    private String service, company, slot;
-
+    private String service, company, slot, provider;
 
     public String getSlot() {
         return slot;
@@ -15,9 +14,18 @@ public class SelectedServiceClass {
     public SelectedServiceClass() {
     }
 
-    public SelectedServiceClass(final String service, final String company) {
+    public SelectedServiceClass(final String service, final String company, String provider) {
         this.service = service;
         this.company = company;
+        this.provider = provider;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(final String provider) {
+        this.provider = provider;
     }
 
     public String getService() {

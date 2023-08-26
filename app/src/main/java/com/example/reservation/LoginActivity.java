@@ -69,71 +69,71 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-            public void onLoginClick(View view) {
+    public void onLoginClick(View view) {
 
-                String[] userName = new String[1];
-                String email, password;
-                email = editTextEmail.getText().toString();
-                password = editTextPassword.getText().toString();
-                if(TextUtils.isEmpty(email)){
-                    Toast.makeText(LoginActivity.this, "Email field is required", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(TextUtils.isEmpty(password)){
-                    Toast.makeText(LoginActivity.this, "Password field is required", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+        String[] userName = new String[1];
+        String email, password;
+        email = editTextEmail.getText().toString();
+        password = editTextPassword.getText().toString();
+        if(TextUtils.isEmpty(email)){
+            Toast.makeText(LoginActivity.this, "Email field is required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(password)){
+            Toast.makeText(LoginActivity.this, "Password field is required", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(LoginActivity.this, "Login successfully",
-                                            Toast.LENGTH_SHORT).show();
-                                    //////////////
-                                    mAuth = FirebaseAuth.getInstance();
-                                    user = mAuth.getCurrentUser();
-                                    reference = FirebaseDatabase.getInstance().getReference("Users");
-                                    if(user != null){
-                                        String userEmail = user.getEmail();
-                                        reference.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, "Login successfully",
+                                    Toast.LENGTH_SHORT).show();
+                            //////////////
+                            mAuth = FirebaseAuth.getInstance();
+                            user = mAuth.getCurrentUser();
+                            reference = FirebaseDatabase.getInstance().getReference("Users");
+                            if(user != null){
+                                String userEmail = user.getEmail();
+                                reference.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
 
-                                            public void onDataChange(@NonNull final DataSnapshot snapshot) {
-                                                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                                                    firstName = userSnapshot.child("firstName").getValue(String.class);
-                                                    lastName = userSnapshot.child("lastName").getValue(String.class);
-                                                    country = userSnapshot.child("country").getValue(String.class);
-                                                    city = userSnapshot.child("city").getValue(String.class);
-                                                    phone = userSnapshot.child("phone").getValue(String.class);
-                                                    switcher = userSnapshot.child("switcher").getValue(Boolean.class);
-                                                    //userEmail = userSnapshot.child("email").getValue(String.class);
+                                    public void onDataChange(@NonNull final DataSnapshot snapshot) {
+                                        for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                                            firstName = userSnapshot.child("firstName").getValue(String.class);
+                                            lastName = userSnapshot.child("lastName").getValue(String.class);
+                                            country = userSnapshot.child("country").getValue(String.class);
+                                            city = userSnapshot.child("city").getValue(String.class);
+                                            phone = userSnapshot.child("phone").getValue(String.class);
+                                            switcher = userSnapshot.child("switcher").getValue(Boolean.class);
+                                            //userEmail = userSnapshot.child("email").getValue(String.class);
 
-                                                    UserDataClass userData = new UserDataClass(firstName, lastName, switcher,phone, country,city, email);
-                                                    UserDataHolder.getInstance().setUserData(userData);
+                                            UserDataClass userData = new UserDataClass(firstName, lastName, switcher,phone, country,city, email);
+                                            UserDataHolder.getInstance().setUserData(userData);
 
-                                                }
-                                            }
-
-
-                                            public void onCancelled(@NonNull final DatabaseError error) {
-
-                                            }
-                                        });
+                                        }
                                     }
 
-                                    /////////////
-                                    Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
-                                    intent.putExtra("greeting", "Welcome" );
-                                    intent.putExtra("login", true);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                }
+
+                                    public void onCancelled(@NonNull final DatabaseError error) {
+
+                                    }
+                                });
                             }
-                        });
+
+                            /////////////
+                            Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+                            intent.putExtra("greeting", "Welcome" );
+                            intent.putExtra("login", true);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
 
     }

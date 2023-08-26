@@ -6,6 +6,7 @@ import com.example.reservation.classes.SelectedServiceClass;
 import com.example.reservation.classes.ServiceClass;
 import com.example.reservation.classes.ServiceSubtypeClass;
 import com.example.reservation.classes.UserDataClass;
+import com.example.reservation.classes.UserDataHolder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -60,5 +61,10 @@ public class MapDataToDatabaseClass {
 
     public void saveReservationsHistory(DatabaseReference reference, String userName, String pickedDate, String pickedSlot, SelectedServiceClass selectedService){
         reference.child("Users").child(userName).child("My reservations").child(pickedDate).child(pickedSlot).setValue(selectedService);
+    }
+
+    public void saveProvidersAppointemnts(DatabaseReference reference, String providerName, UserDataClass currentUser, SelectedServiceClass selectedService, String date, String slot){
+        String user = currentUser.getFirstName() + " " + currentUser.getLastName();
+        reference.child("Users").child(providerName).child("Appointments").child(selectedService.getCompany()).child(user).child(date).child(slot).setValue(selectedService);
     }
 }

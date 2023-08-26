@@ -3,9 +3,12 @@ package com.example.reservation;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.reservation.classes.UserDataClass;
@@ -36,6 +39,11 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        View viewToAnimate = findViewById(R.id.welcomeLinearLayout);
+        AnimatorSet colorAnimation = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.anim.welcome_animation);
+        colorAnimation.setTarget(viewToAnimate);
+        colorAnimation.start();
+
         UserDataClass userData = UserDataHolder.getInstance().getUserData();
         firstName = userData.getFirstName();
         Intent intent= getIntent();
@@ -49,24 +57,31 @@ public class WelcomeActivity extends AppCompatActivity {
         Boolean isLogout = intent.getBooleanExtra("logout", false);
 
         String userNameFromIntent = intent.getStringExtra("userName");
-            new Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
 
-                @Override
-                public void run() {
-                    if (isLogin) {
+            @Override
+            public void run() {
+                if (isLogin) {
+                    if(UserDataHolder.getInstance().getUserData().getFirstName() != null) {
                         name.setText(UserDataHolder.getInstance().getUserData().getFirstName());
-                        startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
-                        finish();
+                        TextView greeting = findViewById(R.id.greeting);
+                        greeting.setVisibility(View.VISIBLE);
                     }
-                    if (isLogout) {
-                        name.setText(userNameFromIntent);
-                        startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
-                        finish();
-                    }
+                    startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
+                    finish();
                 }
-            }, 3000);
-
-        }
+                if (isLogout) {
+                    if(UserDataHolder.getInstance().getUserData().getFirstName() != null) {
+                        name.setText(userNameFromIntent);
+                        TextView greeting = findViewById(R.id.greeting);
+                        greeting.setVisibility(View.VISIBLE);
+                    }
+                    startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+                    finish();
+                }
+            }
+        }, 3500);
 
     }
 
+}

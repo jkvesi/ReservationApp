@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foregroundGravity="center"
+    android:orientation="vertical"
+    app:layout_anchorGravity="center_horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="30dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_shape"
+                android:orientation="horizontal"
+                android:padding="2dp"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:id="@+id/userHolder"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#84638E"
+                    android:fontFamily="@font/allerta"
+                    android:paddingBottom="5dp"
+                    android:text="Company name"
+                    android:textColor="@color/textView_color"
+                    android:textColorHighlight="#2674B3"
+                    android:textColorLink="#2395C8"
+                    android:textSize="18sp"
+                    />
+
+                <TextView
+                    android:id="@+id/serviceHolder"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#84638E"
+                    android:fontFamily="@font/allerta"
+                    android:paddingBottom="5dp"
+                    android:text="Company name"
+                    android:textColor="@color/textView_color"
+                    android:textColorHighlight="#2674B3"
+                    android:textColorLink="#2395C8"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/dateHolder"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#84638E"
+                    android:fontFamily="@font/allerta"
+                    android:paddingBottom="5dp"
+                    android:text="Serviceeee"
+                    android:textColor="@color/textView_color"
+                    android:textColorHighlight="#2674B3"
+                    android:textColorLink="#2395C8"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/slotHolder"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#84638E"
+                    android:fontFamily="@font/allerta"
+                    android:paddingBottom="5dp"
+                    android:text="Serviceeee"
+                    android:textColor="@color/textView_color"
+                    android:textColorHighlight="#2674B3"
+                    android:textColorLink="#2395C8"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/dismissBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#B19FB6"
+                android:enabled="true"
+                android:text="Dismiss"
+                android:textSize="15dp"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
+

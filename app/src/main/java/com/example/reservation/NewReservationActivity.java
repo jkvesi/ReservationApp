@@ -108,7 +108,7 @@ public class NewReservationActivity extends AppCompatActivity implements DatePic
         displayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                SelectedServiceClass selectedService = new SelectedServiceClass(selectedServiceType, selectedCompany);
+                SelectedServiceClass selectedService = new SelectedServiceClass(selectedServiceType, selectedCompany,userNameList.get(0) );
                UserDataHolder.getInstance().setSelectedService(selectedService);
                // userNameList = retrieveDataFromDatabaseClass.getUserNameByCompany(userNameReference, selectedService, selectedServiceType, selectedCompany );
                //check if that node already exist, if not then generate slots and set it to true

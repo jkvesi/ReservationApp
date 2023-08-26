@@ -4,36 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WelcomeActivity"
-    android:background="@color/background_color">
+    android:background="@color/background_color"
+    tools:context=".WelcomeActivity">
 
-    <TextView
-        android:id="@+id/greeting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/allerta"
-        android:text=" "
-        android:textAlignment="viewStart"
-        android:textColor="@color/textViewHeader_color"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.323" />
+    <LinearLayout
+        android:id="@+id/welcomeLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
-    <TextView
-        android:id="@+id/userName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/allerta"
-        android:text=" "
-        android:textAlignment="viewStart"
-        android:textColor="@color/textViewHeader_color"
-        android:textSize="40sp"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="0dp"
-        app:layout_constraintStart_toStartOf="@id/greeting"
-        app:layout_constraintTop_toBottomOf="@id/greeting"
-        app:layout_constraintVertical_bias="0.323" />
+        <LinearLayout
+            android:id="@+id/textWelcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
+
+            <TextView
+                android:id="@+id/greeting"
+                android:layout_width="wrap_content"
+                android:layout_height="62dp"
+                android:fontFamily="@font/allerta"
+                android:text=" "
+                android:textAlignment="viewStart"
+                android:textColor="@color/textViewHeader_color"
+                android:textSize="40sp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.323" />
+
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/allerta"
+                android:text=" "
+                android:textAlignment="viewStart"
+                android:textColor="@color/textViewHeader_color"
+                android:textSize="40sp"
+                app:layout_constraintStart_toStartOf="@id/greeting"
+                app:layout_constraintTop_toBottomOf="@id/greeting"
+                app:layout_constraintVertical_bias="0.323" />
+        </LinearLayout>
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -44,6 +44,7 @@ public class HomeActivity extends AppCompatActivity {
         retrieveData.getServices(companyReference, UserDataHolder.getInstance().getUserData());
 
         retrieveData.getPreviousReservations(companyReference, UserDataHolder.getInstance().getUserData().getFirstName());
+        retrieveData.getScheduledAppointments(companyReference, UserDataHolder.getInstance().getUserData().getFirstName());
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");

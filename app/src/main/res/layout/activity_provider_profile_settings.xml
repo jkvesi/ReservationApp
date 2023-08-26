@@ -403,6 +403,17 @@
 
             </LinearLayout>
         </FrameLayout>
+        <Button
+            android:id="@+id/appointmentsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scheduled appointments"/>
+        <LinearLayout
+            android:id="@+id/appointmentsContainer"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+        </LinearLayout>
 
 
     </LinearLayout>
