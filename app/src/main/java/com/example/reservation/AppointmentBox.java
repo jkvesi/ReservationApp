@@ -37,6 +37,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public class AppointmentBox extends Fragment {
 
@@ -83,6 +94,7 @@ public class AppointmentBox extends Fragment {
                 public void onClick(final View view) {
                     deleteItemsInDatabaseClass.dismissAppointment(reference,UserDataHolder.getInstance().getUserData(), companyDelete,userDelete, dateDelete, slotDelete );
                     showGifDialog();
+                    buttonSendEmail();
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -117,6 +129,53 @@ public class AppointmentBox extends Fragment {
     private void dismissGifDialog() {
         if (gifDialog != null && gifDialog.isShowing()) {
             gifDialog.dismiss();
+        }
+    }
+    public void buttonSendEmail(){
+
+        try {
+            String stringSenderEmail = "julijakvesic15@gmail.com";
+            String stringReceiverEmail = "julijakvesic@gmail.com";
+            String stringPasswordSenderEmail = "ouyyylpkodsefpei";
+
+            String stringHost = "smtp.gmail.com";
+
+            Properties properties = System.getProperties();
+
+            properties.put("mail.smtp.host", stringHost);
+            properties.put("mail.smtp.port", "465");
+            properties.put("mail.smtp.ssl.enable", "true");
+            properties.put("mail.smtp.auth", "true");
+
+            javax.mail.Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(stringSenderEmail, stringPasswordSenderEmail);
+                }
+            });
+
+            MimeMessage mimeMessage = new MimeMessage(session);
+            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(stringReceiverEmail));
+
+            mimeMessage.setSubject("Subject: Android App email");
+            mimeMessage.setText("Your reservation is canceled!");
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Transport.send(mimeMessage);
+                    } catch (MessagingException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.start();
+
+        } catch (AddressException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            e.printStackTrace();
         }
     }
 }

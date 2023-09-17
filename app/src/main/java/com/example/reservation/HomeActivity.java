@@ -110,7 +110,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     auth.signOut();
                     Intent intent = new Intent(HomeActivity.this, WelcomeActivity.class);
-                    intent.putExtra("greeting", "Goodby");
+                    intent.putExtra("greeting", "Goodbye");
                     intent.putExtra("logout", true);
                     intent.putExtra("userName", userName);
                     startActivity(intent);

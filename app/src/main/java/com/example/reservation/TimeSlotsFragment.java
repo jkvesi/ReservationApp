@@ -1,6 +1,7 @@
 package com.example.reservation;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -15,17 +16,30 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import androidx.fragment.app.Fragment;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import com.example.reservation.classes.SendEmailWorker;
+
+import com.example.reservation.classes.ReminderClass;
 import com.example.reservation.classes.SelectedServiceClass;
 import com.example.reservation.classes.UserDataHolder;
 import com.example.reservation.functions.MapDataToDatabaseClass;
 import com.example.reservation.functions.UpdateItemsInDatabase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class TimeSlotsFragment extends Fragment{
 
     DatabaseReference reference;
+    ReminderClass reminder = new ReminderClass();
     MapDataToDatabaseClass mapDataToDatabaseClass = new MapDataToDatabaseClass();
 
     private LinearLayout rowContainer;
@@ -95,9 +109,9 @@ public class TimeSlotsFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 updateItemsInDatabase.setTimeSlotAsUnavailable(reference, timeSlots[0], userName,pickedDate );
-                textView1.setEnabled(false);
+               // textView1.setEnabled(false);
                 textView1.setBackgroundColor(100);
-                showNotesDialog(timeSlots[0]);
+                showNotesDialog(timeSlots[0], textView1);
                 //selectedService.setSlot(timeSlots[0]);
             }
         });
@@ -105,9 +119,9 @@ public class TimeSlotsFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 updateItemsInDatabase.setTimeSlotAsUnavailable(reference,timeSlots[1], userName,pickedDate );
-                textView2.setEnabled(false);
+              //  textView2.setEnabled(false);
                 textView2.setBackgroundColor(100);
-                showNotesDialog(timeSlots[1]);
+                showNotesDialog(timeSlots[1], textView2);
                // selectedService.setSlot(timeSlots[1]);
             }
         });
@@ -115,16 +129,16 @@ public class TimeSlotsFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 updateItemsInDatabase.setTimeSlotAsUnavailable(reference,timeSlots[2], userName,pickedDate );
-                textView3.setEnabled(false);
+              //  textView3.setEnabled(false);
                 textView3.setBackgroundColor(100);
-                showNotesDialog(timeSlots[2]);
-               // selectedService.setSlot(timeSlots[2]);
+                showNotesDialog(timeSlots[2], textView3);
             }
         });
         rowContainer.addView(rowView);
     }
 
-    private void showNotesDialog(String timeSlot) {
+    private void showNotesDialog(String timeSlot, TextView text) {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.reservation_notes, null);
         builder.setView(dialogView);
@@ -138,7 +152,32 @@ public class TimeSlotsFragment extends Fragment{
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                text.setEnabled(false);
+
                 UserDataHolder.getInstance().setPickedSlot(timeSlot);
+                int hour = Integer.parseInt(Arrays.stream(timeSlot.split(":")).toList().get(0));
+                int minute = Integer.parseInt(Arrays.stream(timeSlot.split(":")).toList().get(1));
+                Calendar time = Calendar.getInstance();
+                time.set(Calendar.HOUR_OF_DAY, hour); // 24-hour format
+                time.set(Calendar.MINUTE, minute);
+
+                LocalDate todays = LocalDate.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d,yyyy");
+                String formattedDate = todays.format(formatter);
+                LocalDate todaysDate = LocalDate.parse(formattedDate, formatter);
+                LocalDate pickedAppointmentDay = LocalDate.parse(pickedDate, DateTimeFormatter.ofPattern("MMM d, yyyy"));
+
+                long daysBetween = ChronoUnit.DAYS.between(todaysDate, pickedAppointmentDay);
+                long timeMillis = time.getTimeInMillis();
+                long currentTimeMillis = System.currentTimeMillis();
+                //postavka slanja maila 24 sata ranije
+                long initialDelay = timeMillis - currentTimeMillis + ((daysBetween -1) * 24 * 60 * 60 * 1000);
+
+                OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(SendEmailWorker.class)
+                        .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
+                        .build();
+
+                WorkManager.getInstance(getContext()).enqueue(workRequest);
                 String notes = noteEditText.getText().toString();
                 dialog.dismiss();
                 mapDataToDatabaseClass.saveNotesForPickedSlot(reference, UserDataHolder.getInstance().getSelectedCompanyUserName(),
@@ -179,7 +218,6 @@ public class TimeSlotsFragment extends Fragment{
 
         ImageView gifImageView = gifDialog.findViewById(R.id.gifImageView);
 
-        String gifUrl = "";
         Glide.with(requireContext())
                 .asGif()
                 .load( R.raw.correct_sign)

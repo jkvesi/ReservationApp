@@ -57,6 +57,8 @@ public class DeleteItemsInDatabaseClass {
                     public void onSuccess(final Void unused) {
                         reference.child("Working hours").child(currentUser.getFirstName()).child(date).
                                 child("timeSlots").child(slot).setValue(true);
+                        reference.child("Users").child(currentUser.getFirstName()).
+                                child("My reservations").child(date).child(slot).removeValue();
                     }
                 });
     }

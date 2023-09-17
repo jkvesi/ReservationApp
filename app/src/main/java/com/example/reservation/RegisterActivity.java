@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -139,6 +140,20 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+                            FirebaseUser userSaved = FirebaseAuth.getInstance().getCurrentUser();
+                            if(userSaved != null) {
+                                userSaved.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull final Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            Toast.makeText(getApplicationContext(), "Verification email sent! Confirm your email address to log in!", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), "Problems with email address!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            }
                             Toast.makeText(RegisterActivity.this, "Account created successfully!",
                                     Toast.LENGTH_SHORT).show();
                             if (!firstName.isEmpty() && !lastName.isEmpty()) {
